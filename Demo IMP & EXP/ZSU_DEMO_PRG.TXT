@@ -1,0 +1,33 @@
+*&---------------------------------------------------------------------*
+*& Report zsu_demo_prg
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zsu_demo_prg.
+
+
+PARAMETERS: p_tab TYPE dd03l-tabname.
+
+DATA: lo_dyn_data TYPE REF TO data.
+
+FIELD-SYMBOLS: <lt_tab> TYPE ANY TABLE.
+
+CREATE DATA lo_dyn_data TYPE TABLE OF (p_tab).
+
+ASSIGN lo_dyn_data->* TO <lt_tab>.
+
+DATA(lo_tab) = NEW zsu_demo_class( ).
+
+CALL METHOD lo_tab->read_data
+  EXPORTING
+    imp_tab = p_tab
+  IMPORTING
+    exp_tab = <lt_tab> .
+
+cl_demo_output=>display_data(
+                EXPORTING
+                VALUE = <lt_tab> ).
+
+
+
+  .

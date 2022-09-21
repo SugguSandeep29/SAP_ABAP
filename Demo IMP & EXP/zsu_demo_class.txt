@@ -1,0 +1,42 @@
+CLASS zsu_demo_class DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+
+    DATA:
+       lo_dyn_data TYPE REF TO data.
+
+    METHODS: constructor,
+      read_data IMPORTING imp_tab TYPE tabname
+                EXPORTING exp_tab TYPE ANY TABLE.
+
+ENDCLASS.
+
+
+
+CLASS zsu_demo_class IMPLEMENTATION.
+
+  METHOD: constructor.
+  ENDMETHOD.
+
+  METHOD: read_data.
+
+    FIELD-SYMBOLS: <lt_tab> TYPE ANY TABLE.
+
+    CREATE DATA lo_dyn_data TYPE TABLE OF (imp_tab).
+
+    ASSIGN lo_dyn_data->* TO <lt_tab>.                          " Connecting Data To Field Symbol
+
+
+
+*    SELECT * FROM (imp_tab) INTO TABLE <lt_tab> UP TO 10 ROWS.
+    SELECT * FROM (imp_tab) UP TO 10 ROWS INTO  CORRESPONDING FIELDS OF TABLE <lt_tab>.
+
+    exp_tab = <lt_tab>.
+
+  ENDMETHOD.
+
+
+ENDCLASS.
